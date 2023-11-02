@@ -1,0 +1,11 @@
+.profile__photo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+}
+
+.profile__avatar:hover .profile__photo {
+  transform: scale(1.05);
+  opacity: 0.3;
+  transition: opacity 0.3s ease-in-out;
+}

@@ -1,0 +1,19 @@
+.element__inner {
+  display: flex;
+  justify-content: space-between;
+  background-color: #fff;
+  padding: 25px 15px 27px 21px;
+  margin: 0;
+  align-items: center;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  box-sizing: border-box;
+}
+
+@media screen and (max-width: 768px) {
+  .element__inner {
+    padding-top: 21px;
+    padding-bottom: 28px;
+  }
+
+}

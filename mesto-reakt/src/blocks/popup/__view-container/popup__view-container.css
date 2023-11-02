@@ -1,0 +1,11 @@
+.popup__view-container {
+  position: relative;
+  max-width: 75vw;
+  max-height: 75vh;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  color: rgba(0, 0, 0, 1);
+  box-sizing: border-box;
+
+}
