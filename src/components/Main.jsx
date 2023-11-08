@@ -1,8 +1,8 @@
 import React from 'react';
 import KustoAvatar from '../images/JIKusto.png'
 import { useState, useEffect } from 'react';
-import api from '../utils/Api.js'
-import Card from './Card.js';
+import api from '../utils/Api.jsx'
+import Card from './Card.jsx';
 
 
 function Main({ onAddPlace, onEditAvatar, onEditProfile, onCardClick }) {

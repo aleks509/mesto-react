@@ -1,10 +1,10 @@
 import React from 'react';
 import '../index.css';
-import Header from './Header.js';
-import Main from './Main.js';
-import Footer from './Footer.js';
-import PopupWithForm from './PopupWithForm.js';
-import ImagePopup from './ImagePopup.js';
+import Header from './Header.jsx';
+import Main from './Main.jsx';
+import Footer from './Footer.jsx';
+import PopupWithForm from './PopupWithForm.jsx';
+import ImagePopup from './ImagePopup.jsx';
 import { useState, useEffect } from 'react';
 
 function App() {
