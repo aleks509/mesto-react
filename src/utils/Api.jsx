@@ -57,22 +57,17 @@ const oneError = (response) => {
   .then((response) => oneError(response))
 }
 
-  // /cards/likes/cardId
-  likeCard(cardId) {//cardId это _id карточки, которую удаляем
-   return fetch(`${this._url}/cards/likes/${cardId}`, {
-      method: 'PUT',
-      headers: this._headers,
-    })
-    .then((response) => oneError(response))
-  }
 
-  unlikeCard(cardId) {
-    return fetch(`${this._url}/cards/likes/${cardId}`, {
-      method: 'DELETE',
-      headers: this._headers,
+
+changeLikeCardStatus(cardId, isLiked) {
+  return fetch(`${this._url}/cards/likes/${cardId}`, {
+    method: `${isLiked ? 'PUT' : 'DELETE'}`,
+    headers: this._headers,
+    body: JSON.stringify({ cardId, isLiked})
   })
   .then((response) => oneError(response))
 }
+
 // /users/me/avatar
   changeAvatar(link) {
     return fetch(`${this._url}/users/me/avatar`, {
