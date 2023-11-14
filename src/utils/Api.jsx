@@ -57,8 +57,6 @@ const oneError = (response) => {
   .then((response) => oneError(response))
 }
 
-
-
 changeLikeCardStatus(cardId, isLiked) {
   return fetch(`${this._url}/cards/likes/${cardId}`, {
     method: `${isLiked ? 'PUT' : 'DELETE'}`,

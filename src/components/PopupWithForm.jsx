@@ -1,5 +1,5 @@
 import React from "react";
-function PopupWithForm({ name, title, children, isOpen, onClose, buttonText }) {
+function PopupWithForm({ name, title, children, isOpen, onClose, buttonText, onSubmit }) {
   return (
     <div className={`${isOpen ? "popup_opened" : ""} popup popup_type_${name}`}>
       <div className="popup__container">
@@ -10,7 +10,7 @@ function PopupWithForm({ name, title, children, isOpen, onClose, buttonText }) {
           aria-label="Закрыть"
           />
         <h3 className="popup__title">{title}</h3>
-        <form className="form" name={`form-${name}`} >
+        <form onSubmit={onSubmit} className="form" name={`form-${name}`} >
           {children}
           <button type="submit" className="form__button-save">
             {buttonText}

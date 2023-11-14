@@ -8,6 +8,8 @@ import ImagePopup from "./ImagePopup.jsx";
 import { useState, useEffect } from "react";
 import api from "../utils/Api.jsx";
 import { CurrentUserContext } from "../contexts/CurrentUserContext.jsx"
+import EditProfilePopup from "./EditProfilePopup"
+
 
 function App() {
   // переменные состояния
@@ -28,6 +30,14 @@ function App() {
   }, [])
 
   // обработчики 
+  function handleUpdateUser({ name, about }) {
+    api.editProfile(name, about)
+    // console.log(name, about)
+    .then((editedData) => {
+      setCurrentUser(editedData)
+      closeAllPopups()
+    })
+  }
   
   function handleCardDelete(card) {
     // console.log(card._id)
@@ -91,36 +101,7 @@ function App() {
           <Footer />
         </div>
 
-        <PopupWithForm
-          name="about"
-          title="Редактировать профиль"
-          isOpen={isEditProfilePopupOpen}
-          onClose={closeAllPopups}
-          buttonText="Изменить"
-        >
-          <input
-            name="name"
-            id="name"
-            className="form__input form__input_type_name"
-            type="text"
-            placeholder="Имя"
-            required
-            minLength="2"
-            maxLength="40"
-          />
-          <span id="name-error" className="form__error"></span>
-          <input
-            name="about"
-            id="about"
-            className="form__input form__input_type_about"
-            type="text"
-            placeholder="О себе"
-            required
-            minLength="2"
-            maxLength="200"
-          />
-          <span id="about-error" className="form__error"></span>
-        </PopupWithForm>
+        <EditProfilePopup onUpdateUser={handleUpdateUser} isOpen={isEditProfilePopupOpen} onClose={closeAllPopups}/>
 
         <PopupWithForm
           name="new-element"
