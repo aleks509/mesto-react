@@ -9,6 +9,7 @@ import { useState, useEffect } from "react";
 import api from "../utils/Api.jsx";
 import { CurrentUserContext } from "../contexts/CurrentUserContext.jsx"
 import EditProfilePopup from "./EditProfilePopup"
+import EditAvatarPopup from "./EditAvatarPopup"
 
 
 function App() {
@@ -24,12 +25,23 @@ function App() {
   useEffect(() => {
     api.getUserInfo()
       .then((data) => {
+        // console.log(data)
         setCurrentUser(data)
       })
       .catch(console.error)
   }, [])
 
   // обработчики 
+function handleUpdateAvatar({ avatar }) {
+  // console.log(avatar)
+  api.changeAvatar(avatar)
+      .then((resp) => {
+        setCurrentUser(resp)
+        // console.log(resp)
+        closeAllPopups()
+      })
+}
+
   function handleUpdateUser({ name, about }) {
     api.editProfile(name, about)
     // console.log(name, about)
@@ -133,23 +145,11 @@ function App() {
             <span id="link-error" className="form__error"></span>
           </fieldset>
         </PopupWithForm>
-        <PopupWithForm
-          name="change-avatar"
-          title="Обновить аватар"
+        <EditAvatarPopup 
+
           isOpen={isEditAvatarPopupOpen}
-          onClose={closeAllPopups}
-          buttonText="Сохранить"
-        >
-          <input
-            name="avatar"
-            id="avatar"
-            className="form__input"
-            type="url"
-            placeholder="Ссылка на новое фото"
-            required
-          />
-          <span id="avatar-error" className="form__error"></span>
-        </PopupWithForm>
+          onClose={closeAllPopups} 
+          onUpdateAvatar={handleUpdateAvatar} />
       </div>
     </CurrentUserContext.Provider>
   );
