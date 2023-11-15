@@ -50,9 +50,10 @@ function App() {
       api.addNewCard(name, link)
         .then((newCard)=> {
           // console.log(newCard)
-          setCards([...cards, newCard])
+          setCards([newCard, ...cards])
           closeAllPopups()
         })
+      .catch(console.error)
     }
 
   function handleUpdateAvatar({ avatar }) {
@@ -63,6 +64,7 @@ function App() {
           // console.log(resp)
           closeAllPopups()
         })
+        .catch(console.error)
   }
 
   function handleUpdateUser({ name, about }) {
@@ -72,6 +74,7 @@ function App() {
       setCurrentUser(editedData)
       closeAllPopups()
     })
+    .catch(console.error)
   }
   
   function handleCardDelete(card) {
@@ -82,16 +85,17 @@ function App() {
           arrayCards.filter((c) => c._id !== card._id)
         })
       })
+      .catch(console.error)
   }
 
   function handleCardLike(card) {
     const isLiked = card.likes.some(item => item._id === currentUser._id);
 
     api.changeLikeCardStatus(card._id, !isLiked)
-      .then((newCard) => {
-        setStateCards((state) =>
-        state.map((c) => c._id === card._id ? newCard : c));
-    });
+      .then(newCard => 
+        setStateCards((state) => 
+        state.map(c => c._id === card._id ? newCard : c)))
+        .catch(console.error)
   }
 
   function handleCardClick(card) {

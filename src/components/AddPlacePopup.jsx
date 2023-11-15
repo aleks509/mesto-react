@@ -6,6 +6,11 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
 //    стэйт переменые 
     const [link, setLink] = React.useState('')
     const [place, setPlace] = React.useState('')
+
+    React.useEffect(() => {
+      setLink('')
+      setPlace('')
+    }, [isOpen])
     
     function handlePlaceInput(e) {
         setPlace(e.target.value)
@@ -21,8 +26,6 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
             name: place,
             link: link
         })
-        setLink('')
-        setPlace('')
    }
 
     return(
