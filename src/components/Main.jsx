@@ -5,21 +5,13 @@ import api from "../utils/Api.jsx";
 import Card from "./Card.jsx";
 import { CurrentUserContext } from "../contexts/CurrentUserContext.jsx"
 
-function Main({ onAddPlace, onEditAvatar, onEditProfile, onCardClick, onCardLike, card, onCardDelete}) {
-  const [cards, setCards] = React.useState([]);
+function Main({ cards, onAddPlace, onEditAvatar, onEditProfile, onCardClick, onCardLike, onCardDelete}) {
+  // const [cards, setCards] = React.useState([]);
   // console.log(cards)
 
   const currentUserData = React.useContext(CurrentUserContext);
 
 
-  useEffect(() => {
-    api
-      .getCards()
-      .then((cards) => {
-        setCards(cards);
-      })
-      .catch(console.error)
-  }, [card]);
 
 
   return (
