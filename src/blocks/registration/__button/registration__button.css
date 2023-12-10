@@ -1,0 +1,16 @@
+.registration__button {
+    background-color: #ffffff;
+    text-align: center;
+    line-height: 22px;
+    margin-top: 216px;
+    min-width: 358px;
+    min-height: 50px;
+    font-size: 18px;
+    border: none;
+    padding: 0;
+}
+
+.registration__button:hover {
+    cursor: pointer;
+    opacity: 0.6;
+}

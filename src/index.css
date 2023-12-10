@@ -50,7 +50,6 @@
 
 
 @import url(./blocks/popup/popup.css);
-
 @import url(./blocks/popup/_opened/popup_opened.css);
 @import url(./blocks/popup/__container/popup__container.css);
 @import url(./blocks/popup/__view-container/popup__view-container.css);
@@ -74,3 +73,10 @@
 @import url(./blocks/form/__button-save/_disabled/form__button-save_disabled.css);
 
 
+/*Register*/
+@import url(./blocks/registration/__form/registration__form.css);
+@import url(./blocks/registration/__title/registration__title.css);
+@import url(./blocks/registration/__input/registration__input.css);
+@import url(./blocks/registration/__container/registration__container.css);
+@import url(./blocks/registration/__button/registration__button.css);
+@import url(./blocks/registration/__link/registration__link.css);

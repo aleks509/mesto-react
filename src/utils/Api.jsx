@@ -77,6 +77,8 @@ changeLikeCardStatus(cardId, isLiked) {
     })
     .then((response) => oneError(response))
   }
+
+  
 }
 
 const api = new Api({
@@ -86,5 +88,6 @@ const api = new Api({
     'Content-Type': 'application/json'
 }
 })
+
 
 export default api;
