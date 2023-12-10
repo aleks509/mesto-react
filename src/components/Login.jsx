@@ -1,13 +1,13 @@
 // для авторизации пользователя.
 // положить в пропсы onLogin
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 function Login({ onLogin, title, buttonText }) {
   const [email, setEmail] = useState("");
   const [password, setPasssword] = useState("");
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   
   const handleEmailInput = (e) => {
     setEmail(e.target.value);
@@ -19,12 +19,6 @@ function Login({ onLogin, title, buttonText }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     onLogin({ email, password })
-      .then((res) => {
-        navigate("/", { replace: true})
-        setEmail('');
-        setPasssword('')
-      })
-      .catch(console.error);
   };
 
   return (

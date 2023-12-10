@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link,  } from "react-router-dom";
 
 // для регистрации пользователя;
 function Register({  onRegister, title, buttonText, message }) {
   const [email, setEmail] = useState("");
   const [password, setPasssword] = useState("");
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const handleEmailInput = (e) => {
     setEmail(e.target.value);
@@ -18,11 +18,7 @@ function Register({  onRegister, title, buttonText, message }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onRegister({ password, email })
-      .then(() => {
-        navigate("/sign-in", { replace: true});
-      })
-      .catch(console.error);
+    onRegister({ email, password })
   };
 
   return (

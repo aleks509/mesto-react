@@ -17,6 +17,7 @@ import Register from "./Register";
 import ProtectedRoute from "./ProtectedRoute";
 // import InfoTooltip from "./InfoTooltip"
 import auth from "../utils/Auth";
+import InfoTooltip from "./InfoTooltip";
 
 function App() {
   // переменные состояния
@@ -28,8 +29,13 @@ function App() {
   const [currentUser, setCurrentUser] = React.useState({});
   const [stateCards, setStateCards] = React.useState([]);
   const [cards, setCards] = React.useState([]);
-  const [isLoggedIn, setloggedIn] = React.useState(false);
 
+  const [isLoggedIn, setloggedIn] = React.useState(false);
+  const [userEmail, setUserEmail] = useState("");
+  const [isSuccesPopupOpen, setSuccesPopupOpen] = useState(false);
+  const [isInfoTooltipSucces, setInfoTooltipSucces] = useState(false);
+
+  // активация хуков
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -54,45 +60,68 @@ function App() {
   // проверка токена
   const authorization = (jwt) => {
     if (jwt) {
-      auth.tockenCheck(jwt).then((res) => {
-        if (res) {
-          console.log(res);
-          setloggedIn(true);
-          navigate("/", { replace: true})
-        }
-      });
+      auth
+        .tockenCheck(jwt)
+        .then((data) => {
+          // console.log(data.data.email)
+          if (data) {
+            setloggedIn(true);
+            navigate("/", { replace: true });
+          }
+        })
+        .catch(console.error);
     }
   };
 
   useEffect(() => {
     const jwt = localStorage.getItem("jwt");
     authorization(jwt);
-  });
+  }, []);
+
   // обработчики
 
-  function handleRegister({ email, password }) {
-    console.log(email, password);
-    return auth.register(email, password).then((res) => {
-      if (res) {
-        return res;
-      } else {
-        throw new Error("Некорректно заполнено одно из полей");
-      }
-    });
+  function handleSignOut() {
+    localStorage.removeItem("jwt");
+    setUserEmail("");
+    setloggedIn(false);
+    navigate("/sign-in", { replace: true });
   }
 
-  function handleLogin({  password, email }) {
-    console.log(password, email);
-    return auth.authorize(password, email).then((res) => {
-      // if (!res) {
-      //   throw new Error("пользователь с email не найден");
-      // }
-      if (res.jwt) {
-        localStorage.setItem("jwt", res.jwt);
-        setloggedIn(true);
-        return res;
-      }
-    });
+  function handleRegister({ email, password }) {
+    auth
+      .register(email, password)
+      .then((res) => {
+        if (res) {
+          setInfoTooltipSucces(true);
+          setSuccesPopupOpen(true);
+          navigate("/sign-in", { replace: true });
+        }
+      })
+      .catch((error) => {
+        setInfoTooltipSucces(false);
+        setSuccesPopupOpen(false);
+        console.log(error);
+      })
+      .finally(() => setSuccesPopupOpen(true));
+  }
+
+  function handleLogin({ email, password }) {
+    console.log(email, password);
+    auth
+      .authorize(email, password)
+      .then((res) => {
+        if (res) {
+          localStorage.setItem("jwt", res.token);
+          setloggedIn(true);
+          setUserEmail(email);
+          navigate("/", { replace: true });
+        }
+      })
+      .catch((error) => {
+        setSuccesPopupOpen(true);
+        setInfoTooltipSucces(false);
+        console.log(error);
+      });
   }
 
   function handleAddPlaceSubmit({ name, link }) {
@@ -175,52 +204,57 @@ function App() {
     setAddPlacePopupOpen(false);
     setEditAvatarPopupOpen(false);
     setSelectedCard(null);
+    setSuccesPopupOpen(false)
   };
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <div className="page__container">
-          <Header />
+          <Header
+            isLoggedIn={isLoggedIn}
+            userEmail={userEmail}
+            onSignOut={handleSignOut}
+            signOut="Выйти"
+            signUp="Регистрация"
+            singIn="Войти"
+          />
           <Routes>
             <Route
-                path="/"
-                element={
-                  <ProtectedRoute
-                    isLoggedIn={isLoggedIn}
-                    component={Main}
-                    cards={cards}
-                    onEditProfile={handleEditProfileClick}
-                    onAddPlace={handleAddPlaceClick}
-                    onEditAvatar={handleEditAvatarClick}
-                    onCardClick={handleCardClick}
-                    onCardLike={handleCardLike}
-                    onCardDelete={handleCardDelete}
-                  />}
-              />
-              <Route
-                path="/sign-up"
-                element={
-                  <Register
-                    onRegister={handleRegister}
-                    title="Регистрация"
-                    buttonText="Зарегистрироваться"
-                    message="Уже зарегистрированы? Войти"
-                  />
-                }
-              />
-              <Route
-                path="/sign-in"
-                element={
-                  <Login
-                    onLogin={handleLogin}
-                    title="Вход"
-                    buttonText="Войти"
-                  />
-                }
-              />
-              
-              {/* <Route 
+              path="/"
+              element={
+                <ProtectedRoute
+                  isLoggedIn={isLoggedIn}
+                  component={Main}
+                  cards={cards}
+                  onEditProfile={handleEditProfileClick}
+                  onAddPlace={handleAddPlaceClick}
+                  onEditAvatar={handleEditAvatarClick}
+                  onCardClick={handleCardClick}
+                  onCardLike={handleCardLike}
+                  onCardDelete={handleCardDelete}
+                />
+              }
+            />
+            <Route
+              path="/sign-up"
+              element={
+                <Register
+                  onRegister={handleRegister}
+                  title="Регистрация"
+                  buttonText="Зарегистрироваться"
+                  message="Уже зарегистрированы? Войти"
+                />
+              }
+            />
+            <Route
+              path="/sign-in"
+              element={
+                <Login onLogin={handleLogin} title="Вход" buttonText="Войти" />
+              }
+            />
+
+            {/* <Route 
               path="*" 
               element={<Navigate replace to="/sign-in" />} /> */}
           </Routes>
@@ -244,6 +278,12 @@ function App() {
           isOpen={isEditAvatarPopupOpen}
           onClose={closeAllPopups}
           onUpdateAvatar={handleUpdateAvatar}
+        />
+        <InfoTooltip
+          name={"succes"}
+          isOpen={isInfoTooltipSucces}
+          isSuccess={isSuccesPopupOpen}
+          onClose={closeAllPopups}
         />
       </div>
     </CurrentUserContext.Provider>

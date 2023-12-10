@@ -17,11 +17,11 @@ class Auth {
 }
 // обработку в реджистр и логин компонентах
 
-authorize (password, email) {
+authorize (email, password ) {
     return fetch(`${this._url}/signin`, {
         method: 'POST',
         headers: this._headers,
-        body: JSON.stringify({ password, email })
+        body: JSON.stringify({ email, password  })
     })
     .then((response) => {
         return response.json()
