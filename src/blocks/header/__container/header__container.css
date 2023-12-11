@@ -3,3 +3,11 @@
     /* align-items: center; */
     display: flex;
 }
+
+
+@media screen and (max-width: 900px) {
+    .header__container  {
+      margin-top: 28px;
+
+    }
+  }

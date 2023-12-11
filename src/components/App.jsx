@@ -3,7 +3,6 @@ import "../index.css";
 import Header from "./Header.jsx";
 import Main from "./Main.jsx";
 import Footer from "./Footer.jsx";
-import PopupWithForm from "./PopupWithForm.jsx";
 import ImagePopup from "./ImagePopup.jsx";
 import { useState, useEffect } from "react";
 import api from "../utils/Api.jsx";
@@ -23,14 +22,14 @@ function App() {
   // переменные состояния
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] =
     React.useState(false);
-  const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false);
-  const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
-  const [selectedCard, setSelectedCard] = React.useState(null);
-  const [currentUser, setCurrentUser] = React.useState({});
-  const [stateCards, setStateCards] = React.useState([]);
-  const [cards, setCards] = React.useState([]);
+  const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
+  const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
+  const [selectedCard, setSelectedCard] = useState(null);
+  const [currentUser, setCurrentUser] = useState({});
+  const [stateCards, setStateCards] = useState([]);
+  const [cards, setCards] = useState([]);
 
-  const [isLoggedIn, setloggedIn] = React.useState(false);
+  const [isLoggedIn, setloggedIn] = useState(false);
   const [userEmail, setUserEmail] = useState("");
   const [isSuccesPopupOpen, setSuccesPopupOpen] = useState(false);
   const [isInfoTooltipSucces, setInfoTooltipSucces] = useState(false);
@@ -39,23 +38,30 @@ function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    api
+    if (isLoggedIn) {
+      api
       .getCards()
       .then((cards) => {
         setCards(cards);
       })
       .catch(console.error);
-  }, [stateCards]);
+    }
+    
+  }, [isLoggedIn]);
+
 
   useEffect(() => {
-    api
+    if (isLoggedIn) {
+      api
       .getUserInfo()
       .then((data) => {
         // console.log(data)
         setCurrentUser(data);
       })
       .catch(console.error);
-  }, []);
+    }
+
+  }, [isLoggedIn]);
 
   // проверка токена
   const authorization = (jwt) => {
@@ -65,6 +71,7 @@ function App() {
         .then((data) => {
           // console.log(data.data.email)
           if (data) {
+            console.log(data.data.email)
             setloggedIn(true);
             navigate("/", { replace: true });
           }
@@ -93,13 +100,13 @@ function App() {
       .then((res) => {
         if (res) {
           setInfoTooltipSucces(true);
-          setSuccesPopupOpen(true);
+          // setSuccesPopupOpen(true);
           navigate("/sign-in", { replace: true });
         }
       })
       .catch((error) => {
         setInfoTooltipSucces(false);
-        setSuccesPopupOpen(false);
+        // setSuccesPopupOpen(false);
         console.log(error);
       })
       .finally(() => setSuccesPopupOpen(true));
@@ -281,9 +288,10 @@ function App() {
         />
         <InfoTooltip
           name={"succes"}
-          isOpen={isInfoTooltipSucces}
-          isSuccess={isSuccesPopupOpen}
+          isOpen={isSuccesPopupOpen}
+          isSuccess={isInfoTooltipSucces}
           onClose={closeAllPopups}
+          
         />
       </div>
     </CurrentUserContext.Provider>
