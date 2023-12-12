@@ -2,7 +2,7 @@ const oneError = (response) => {
     if (response.ok) {
       return response.json()
     } else {
-      Promise.reject(`Что-то пошло не так: ${response.status}`)
+      return Promise.reject(`Что-то пошло не так: ${response.status}`)
     }
   }
 class Auth {

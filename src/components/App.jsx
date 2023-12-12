@@ -69,9 +69,8 @@ function App() {
       auth
         .tockenCheck(jwt)
         .then((data) => {
-          // console.log(data.data.email)
           if (data) {
-            console.log(data.data.email)
+            setUserEmail(data.data.email)
             setloggedIn(true);
             navigate("/", { replace: true });
           }
@@ -261,15 +260,12 @@ function App() {
               }
             />
 
-            {/* <Route 
-              path="*" 
-              element={<Navigate replace to="/sign-in" />} /> */}
           </Routes>
 
-          <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+         <ImagePopup card={selectedCard} onClose={closeAllPopups} />
           <Footer />
         </div>
-        {/* <InfoTooltip /> */}
+     
         <EditProfilePopup
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}
