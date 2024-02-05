@@ -40,27 +40,24 @@ function App() {
   useEffect(() => {
     if (isLoggedIn) {
       api
-      .getCards()
-      .then((cards) => {
-        setCards(cards);
-      })
-      .catch(console.error);
+        .getCards()
+        .then((cards) => {
+          setCards(cards);
+        })
+        .catch(console.error);
     }
-    
   }, [isLoggedIn]);
-
 
   useEffect(() => {
     if (isLoggedIn) {
       api
-      .getUserInfo()
-      .then((data) => {
-        // console.log(data)
-        setCurrentUser(data);
-      })
-      .catch(console.error);
+        .getUserInfo()
+        .then((data) => {
+          // console.log(data)
+          setCurrentUser(data);
+        })
+        .catch(console.error);
     }
-
   }, [isLoggedIn]);
 
   // проверка токена
@@ -70,7 +67,7 @@ function App() {
         .tockenCheck(jwt)
         .then((data) => {
           if (data) {
-            setUserEmail(data.data.email)
+            setUserEmail(data.data.email);
             setloggedIn(true);
             navigate("/", { replace: true });
           }
@@ -171,7 +168,7 @@ function App() {
       .deleteCard(card._id)
       .then(() => {
         setStateCards((arrayCards) => {
-          arrayCards.filter((c) => c._id !== card._id);
+          return arrayCards.filter((c) => c._id !== card._id);
         });
       })
       .catch(console.error);
@@ -183,7 +180,7 @@ function App() {
     api
       .changeLikeCardStatus(card._id, !isLiked)
       .then((newCard) =>
-        setStateCards((state) =>
+        setCards((state) =>
           state.map((c) => (c._id === card._id ? newCard : c))
         )
       )
@@ -210,7 +207,7 @@ function App() {
     setAddPlacePopupOpen(false);
     setEditAvatarPopupOpen(false);
     setSelectedCard(null);
-    setSuccesPopupOpen(false)
+    setSuccesPopupOpen(false);
   };
 
   return (
@@ -259,13 +256,12 @@ function App() {
                 <Login onLogin={handleLogin} title="Вход" buttonText="Войти" />
               }
             />
-
           </Routes>
 
-         <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+          <ImagePopup card={selectedCard} onClose={closeAllPopups} />
           <Footer />
         </div>
-     
+
         <EditProfilePopup
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}
@@ -287,7 +283,6 @@ function App() {
           isOpen={isSuccesPopupOpen}
           isSuccess={isInfoTooltipSucces}
           onClose={closeAllPopups}
-          
         />
       </div>
     </CurrentUserContext.Provider>
